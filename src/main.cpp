@@ -5,8 +5,10 @@
 #include "threadpool.h"
 #include "server_socket.hpp"
 #include <event2/listener.h>
+#include <winsock2.h>
 
 using namespace std;
+
 
 void accept_cb(struct evconnlistener *evc, evutil_socket_t client_fd, struct sockaddr *client_addr, int socklen, void * arg)
 {
@@ -20,6 +22,15 @@ void accept_cb(struct evconnlistener *evc, evutil_socket_t client_fd, struct soc
 
 int main()
 {
+// WINDOWS 平台对套接字操作需要
+#ifdef _WIN32
+    WSADATA wsa_data;
+    if (WSAStartup(MAKEWORD(2, 2), &wsa_data) != 0) {
+        perror("WSAStartup");
+        return 1;
+    }
+#endif
+
     // 初始化线程池
     auto pool_ptr = threadpool::instance();
     pool_ptr->init();

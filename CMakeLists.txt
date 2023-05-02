@@ -2,13 +2,21 @@ cmake_minimum_required(VERSION 3.21)
 project(ThreadPool)
 
 set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/bin)
 
-include_directories(.)
+if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
+        include_directories(include)
+        link_directories(lib)
+endif()
 
 add_executable(ThreadPool
-        prthread.cpp
-        prthread.h
-        threadpool.cpp
-        threadpool.h server_socket.hpp main.cpp task.h)
+        src/prthread.cpp
+        src/prthread.h
+        src/threadpool.cpp
+        src/threadpool.h src/server_socket.hpp src/main.cpp src/task.h)
 
-target_link_libraries(ThreadPool event)
+if (CMAKE_SYSTEM_NAME STREQUAL "Windows")  
+        target_link_libraries(ThreadPool libeventwin Iphlpapi.lib ws2_32.lib)
+elseif (CMAKE_SYSTEM_NAME STREQUAL "Linux")
+        target_link_libraries(ThreadPool event)
+endif()

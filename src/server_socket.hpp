@@ -48,7 +48,7 @@ public:
             std::cerr << "buffer event new error" << std::endl;
             return;
         }
-        timeval read_timeval = {.tv_sec = 10, .tv_usec = 0};
+        timeval read_timeval = {10, 0};
         bufferevent_set_timeouts(bev, &read_timeval, NULL);
         bufferevent_setcb(bev, client_read_cb, client_write_cb, client_event_cb, this);
         bufferevent_enable(bev, EV_READ);

@@ -45,7 +45,7 @@ private:
     int id_;
 
     /// @brief 进程间通信
-    int fd[2];
+    evutil_socket_t fd[2];
 
     /// @brief 线程回调函数
     void Main();

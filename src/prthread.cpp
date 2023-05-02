@@ -14,7 +14,11 @@ void pipe_cb(evutil_socket_t sock, short event, void *arg)
     if (event & EV_READ)
     {
         static char buf[2] = {0};
-        int read_len = read(sock, buf, 2);
+#ifdef _WIN32
+    int read_len = recv(sock, buf, 2, 0);
+#else
+    int read_len = read(sock, buf, 2);
+#endif
         PrThread *pr = (PrThread *) arg;
         if (pr->task_queue_.empty()) return;
         // 从队列中取出任务
@@ -52,7 +56,11 @@ bool PrThread::Setup()
     }
 
 #ifdef _WIN32 // Windows
-
+    if (evutil_socketpair(AF_INET, SOCK_STREAM, 0, fd) == -1)
+    {   
+        cerr << "Create sockpair error!" << endl;
+        return false;
+    }
 #else // Linux
     if (pipe(fd) == -1)
     {
@@ -76,6 +84,9 @@ bool PrThread::AddTask(Task *task)
 bool PrThread::Activate()
 {
 #ifdef _WIN32
+    if (send(fd[1], "a", 2, 0) == -1)
+        return false;
+    return true;
 #else
     if (write(fd[1], "a", 1) == -1) 
         return false;
