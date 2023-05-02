@@ -5,7 +5,10 @@
 #include "threadpool.h"
 #include "server_socket.hpp"
 #include <event2/listener.h>
+
+#ifdef _WIN32
 #include <winsock2.h>
+#endif
 
 using namespace std;
 
