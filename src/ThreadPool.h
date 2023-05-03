@@ -6,10 +6,10 @@
 class PrThread;
 class Task;
 
-class threadpool
+class ThreadPool
 {
 public:
-    static threadpool * instance();
+    static ThreadPool * instance();
 
     bool init(int thread_size = 10);
 
@@ -23,9 +23,9 @@ private:
 
     std::vector<PrThread *> vec_thread_;
 
-    explicit threadpool();
+    explicit ThreadPool();
 
-    ~threadpool();
+    ~ThreadPool();
 };
 
 #endif

@@ -13,7 +13,7 @@ add_executable(ThreadPool
         src/prthread.cpp
         src/prthread.h
         src/threadpool.cpp
-        src/threadpool.h src/server_socket.hpp src/main.cpp src/task.h)
+        src/ThreadPool.h src/server_socket.hpp src/main.cpp src/task.h)
 
 if (CMAKE_SYSTEM_NAME STREQUAL "Windows")  
         target_link_libraries(ThreadPool libeventwin Iphlpapi.lib ws2_32.lib)

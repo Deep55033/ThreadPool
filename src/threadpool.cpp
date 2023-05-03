@@ -1,20 +1,20 @@
-#include "threadpool.h"
+#include "ThreadPool.h"
 #include "prthread.h"
 #include <thread>
 
 using namespace std;
 
-threadpool::threadpool() {
+ThreadPool::ThreadPool() {
     this->thread_size_ = 0;
 }
 
-threadpool::~threadpool() {
+ThreadPool::~ThreadPool() {
     for (auto &i: this->vec_thread_) {
         delete i;
     }
 }
 
-bool threadpool::init(int thread_size) {
+bool ThreadPool::init(int thread_size) {
     thread_size_ = thread_size;
     for (int i = 0; i < thread_size_; i++) {
         // 初始化所有线程
@@ -28,7 +28,7 @@ bool threadpool::init(int thread_size) {
     return true;
 }
 
-bool threadpool::Dispatch(Task *task)
+bool ThreadPool::Dispatch(Task *task)
 {
     static int cur_thread_index = 0;
     if (task == NULL) return false;
@@ -39,8 +39,8 @@ bool threadpool::Dispatch(Task *task)
     return true;
 }
 
-threadpool * threadpool::instance() {
-    static threadpool thread_pool;
+ThreadPool * ThreadPool::instance() {
+    static ThreadPool thread_pool;
     return &thread_pool;
 }
 

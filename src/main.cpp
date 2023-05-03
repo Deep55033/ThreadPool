@@ -2,7 +2,7 @@
 // Created by yjh on 23-4-28.
 //
 
-#include "threadpool.h"
+#include "ThreadPool.h"
 #include "server_socket.hpp"
 #include <event2/listener.h>
 
@@ -20,7 +20,7 @@ void accept_cb(struct evconnlistener *evc, evutil_socket_t client_fd, struct soc
     evutil_inet_ntop(AF_INET, &in->sin_addr, ip, INET_ADDRSTRLEN);
     cout << "Client ip addr = " << ip << ", port = " << ntohs(in->sin_port) << endl;
     ServerSocket *server = new ServerSocket(client_fd);
-    threadpool::instance()->Dispatch(server);
+    ThreadPool::instance()->Dispatch(server);
 }
 
 int main()
@@ -35,7 +35,7 @@ int main()
 #endif
 
     // 初始化线程池
-    auto pool_ptr = threadpool::instance();
+    auto pool_ptr = ThreadPool::instance();
     pool_ptr->init();
 
     sockaddr_in server_addr = {0};
